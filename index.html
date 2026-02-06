@@ -34,12 +34,12 @@
         
         .btn-container { 
             display: flex; justify-content: center; align-items: center; 
-            gap: 20px; height: 60px; width: 100%; position: relative; 
+            gap: 20px; min-height: 150px; width: 100%; position: relative; 
         }
         
         button { 
             padding: 15px 30px; font-size: 1.1rem; border-radius: 50px; 
-            border: none; cursor: pointer; transition: 0.2s ease-out; font-weight: bold;
+            border: none; cursor: pointer; transition: transform 0.2s ease-out, background-color 0.2s; font-weight: bold;
         }
 
         #yesBtn { background-color: #ff4d6d; color: white; z-index: 11; }
@@ -66,12 +66,13 @@
 <body>
 
     <div class="bg-image"></div>
-<audio id="proposalMusic" src="music.mp3" preload="auto"></audio>
+    <audio id="proposalMusic" src="music.mp3" preload="auto"></audio>
+
     <div id="content">
         <h1 id="question">Disha, Will you be my Valentine? ❤️</h1>
         <div class="btn-container" id="actions">
             <button id="yesBtn" onclick="celebrate()">YES!</button>
-            <button id="noBtn" onmouseover="moveButton()" onclick="handleNoClick()">No</button>
+            <button id="noBtn" onclick="handleNoClick()">No</button>
         </div>
     </div>
 
@@ -102,42 +103,48 @@
             }
         }
 
-        // 3. Persistent Button Prank Logic
-        function moveButton() {
-            const noBtn = document.getElementById('noBtn');
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
-        }
+        // 3. Growth and Text Swap Logic
+        let noClickCount = 0;
+        let yesScale = 1;
+        const noTexts = ["Really?", "Are you sure?", "Think again...", "Last chance!", "Please? 🥺", "Don't do this..."];
 
         function handleNoClick() {
-            moveButton();
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+
+            // Update text based on click count
+            if (noClickCount < noTexts.length) {
+                noBtn.innerText = noTexts[noClickCount];
+            } else {
+                noBtn.innerText = "Just click Yes! ❤️";
+            }
+
+            // Increase Yes button scale
+            yesScale += 0.3; 
+            yesBtn.style.transform = `scale(${yesScale})`;
+            
+            noClickCount++;
         }
 
-        // 4. Success State (Centered Alignment)
+        // 4. Success State
         function celebrate() {
             const content = document.getElementById('content');
             const noBtn = document.getElementById('noBtn');
             if (noBtn) noBtn.style.display = 'none';
+
+            // Play music
             const music = document.getElementById('proposalMusic');
             music.play().catch(error => console.log("Audio play failed:", error));
+
             content.innerHTML = `
                 <h1 style="margin: 0;">I LOBB YOU BEBU! ❤️</h1>
-                <img src="sp.jpg" 
-                     alt="Success Image" 
-                     class="success-img">
+                <img src="sp.jpg" alt="Success Image" class="success-img">
                 <p style="margin: 0; font-size: 1.2rem;">I can't wait to spend my life with you ❤️</p>
             `;
             
             // Celebration explosion
-            for(let i=0; i<30; i++) startHeartRain();
+            for(let i=0; i<40; i++) startHeartRain();
         }
     </script>
 </body>
-
 </html>
-
-
