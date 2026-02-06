@@ -66,7 +66,7 @@
 <body>
 
     <div class="bg-image"></div>
-
+<audio id="proposalMusic" src="music.mp3" preload="auto"></audio>
     <div id="content">
         <h1 id="question">Disha, Will you be my Valentine? ❤️</h1>
         <div class="btn-container" id="actions">
@@ -122,7 +122,8 @@
             const content = document.getElementById('content');
             const noBtn = document.getElementById('noBtn');
             if (noBtn) noBtn.style.display = 'none';
-            
+            const music = document.getElementById('proposalMusic');
+            music.play().catch(error => console.log("Audio play failed:", error));
             content.innerHTML = `
                 <h1 style="margin: 0;">I LOBB YOU BEBU! ❤️</h1>
                 <img src="sp.jpg" 
@@ -138,4 +139,5 @@
 </body>
 
 </html>
+
 
